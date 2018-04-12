@@ -46,6 +46,8 @@
     _sceneView = [[SCNView alloc] initWithFrame:self.view.bounds];
 //    _sceneView.autoenablesDefaultLighting = YES;
     [self.view addSubview:_sceneView];
+    // 防锯齿
+    _sceneView.antialiasingMode = SCNAntialiasingModeMultisampling4X;
     
     _sceneSwitchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _sceneSwitchBtn.frame = CGRectMake(15, 20, 140, 40);
@@ -200,8 +202,9 @@
     }
     
     SCNMaterial *material = [SCNMaterial new];
-    material.diffuse.contents = [UIImage imageNamed:@"spherical_hotspot"];
-    material.diffuse.mipFilter = MTLSamplerMipFilterNearest;
+    material.diffuse.contents = [UIImage imageNamed:@"home2"];
+    // mipFilter 选错会在顶部和底部产生"缝合感"
+    material.diffuse.mipFilter = SCNFilterModeNone;
     material.diffuse.magnificationFilter = SCNFilterModeNearest;
     material.diffuse.contentsTransform = SCNMatrix4MakeScale(-1, 1, 1);
     material.diffuse.wrapS = SCNWrapModeRepeat;
@@ -228,7 +231,7 @@
     
     SCNMaterial *material = [SCNMaterial new];
     material.diffuse.contents = [UIImage imageNamed:@"paris"];
-    material.diffuse.mipFilter = MTLSamplerMipFilterNearest;
+    material.diffuse.mipFilter = SCNFilterModeNone;
     material.diffuse.magnificationFilter = SCNFilterModeNearest;
     material.diffuse.contentsTransform = SCNMatrix4MakeScale(-1, 1, 1);
     material.diffuse.wrapS = SCNWrapModeRepeat;
