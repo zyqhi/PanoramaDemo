@@ -96,6 +96,9 @@
     
     UIPinchGestureRecognizer *pinchGR = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
     [_sceneView addGestureRecognizer:pinchGR];
+    
+    UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+    [_sceneView addGestureRecognizer:tapGR];
 }
 
 #pragma mark - Gesture handlers
@@ -131,5 +134,32 @@
         }
     }
 }
+
+- (void)handleTap:(UITapGestureRecognizer *)gr {
+    CGPoint tapPoint = [gr locationInView:self.sceneView];
+    NSArray<SCNHitTestResult *> *hitTestResults = [self.sceneView hitTest:tapPoint options:nil];
+    
+    if (hitTestResults.count == 0) {
+        return;
+    }
+    
+    SCNNode *boxNode = [self createBoxNode];
+    boxNode.position = hitTestResults.firstObject.localCoordinates;
+    [_geometryNode addChildNode:boxNode];
+}
+
+- (SCNNode *)createBoxNode {
+    float dimension = 0.5;
+    SCNBox *cube = [SCNBox boxWithWidth:dimension height:dimension length:dimension chamferRadius:dimension/2];
+    SCNNode *node = [SCNNode nodeWithGeometry:cube];
+    
+    // 限制该node一直朝向相机，如果不设置的话，会导致box变形
+    SCNLookAtConstraint *constraint = [SCNLookAtConstraint lookAtConstraintWithTarget:_cameraNode];
+    constraint.gimbalLockEnabled = YES;
+    node.constraints = @[constraint];
+    
+    return node;
+}
+
 
 @end
