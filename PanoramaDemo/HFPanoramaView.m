@@ -23,6 +23,11 @@
 @property (nonatomic, strong) SCNNode *geometryNode;
 @property (nonatomic, strong) SCNNode *cameraNode;
 
+@property (nonatomic, assign) CGPoint prevLocation;
+/// 拖动速度
+@property (nonatomic, assign) CGPoint panSpeed;
+@property (nonatomic, assign) CGFloat initialScale;
+
 @end
 
 @implementation HFPanoramaView
@@ -33,6 +38,8 @@
     if (self) {
         [self loadSubviews];
         [self addGestures];
+        
+        _panSpeed = CGPointMake(0.005, 0.005);
     }
     
     return self;
@@ -84,8 +91,29 @@
 }
 
 - (void)addGestures {
-    
+    UIPanGestureRecognizer *panGR = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+    [_sceneView addGestureRecognizer:panGR];
 }
 
+#pragma mark - Gesture handlers
+
+- (void)handlePan:(UIPanGestureRecognizer *)gr {
+    if (gr.state == UIGestureRecognizerStateBegan) {
+        _prevLocation = CGPointZero;
+    } else if (gr.state == UIGestureRecognizerStateChanged) {
+        CGPoint panSpeed = _panSpeed;
+        CGPoint location = [gr translationInView:_sceneView];
+        SCNVector3 orientation = _cameraNode.eulerAngles;
+        SCNVector3 newOrientation = SCNVector3Make(orientation.x + (location.y - _prevLocation.y) * panSpeed.y,
+                                                   orientation.y + (location.x - _prevLocation.x) * panSpeed.x,
+                                                   orientation.z);
+        
+        newOrientation.x = MAX(MIN(newOrientation.x, 1.1), -1.1);
+        
+        // eulerAngles 是啥?
+        _cameraNode.eulerAngles = newOrientation;
+        _prevLocation = location;
+    }
+}
 
 @end
