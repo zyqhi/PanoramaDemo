@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A1B88102085C56C00FD41B1 /* HFPanoramaView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A1B880F2085C56C00FD41B1 /* HFPanoramaView.m */; };
+		8A1B88132085C5BD00FD41B1 /* HFPanoramaDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A1B88122085C5BC00FD41B1 /* HFPanoramaDemoViewController.m */; };
 		8A25D48C1FA1D51E0083A77D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A25D48B1FA1D51E0083A77D /* AppDelegate.m */; };
 		8A25D48F1FA1D51E0083A77D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A25D48E1FA1D51E0083A77D /* ViewController.m */; };
 		8A25D4921FA1D51E0083A77D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A25D4901FA1D51E0083A77D /* Main.storyboard */; };
@@ -16,6 +18,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8A1B880E2085C56C00FD41B1 /* HFPanoramaView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HFPanoramaView.h; sourceTree = "<group>"; };
+		8A1B880F2085C56C00FD41B1 /* HFPanoramaView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HFPanoramaView.m; sourceTree = "<group>"; };
+		8A1B88112085C5BC00FD41B1 /* HFPanoramaDemoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HFPanoramaDemoViewController.h; sourceTree = "<group>"; };
+		8A1B88122085C5BC00FD41B1 /* HFPanoramaDemoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HFPanoramaDemoViewController.m; sourceTree = "<group>"; };
 		8A25D4871FA1D51E0083A77D /* PanoramaDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PanoramaDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A25D48A1FA1D51E0083A77D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		8A25D48B1FA1D51E0083A77D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -62,6 +68,10 @@
 				8A25D48B1FA1D51E0083A77D /* AppDelegate.m */,
 				8A25D48D1FA1D51E0083A77D /* ViewController.h */,
 				8A25D48E1FA1D51E0083A77D /* ViewController.m */,
+				8A1B88112085C5BC00FD41B1 /* HFPanoramaDemoViewController.h */,
+				8A1B88122085C5BC00FD41B1 /* HFPanoramaDemoViewController.m */,
+				8A1B880E2085C56C00FD41B1 /* HFPanoramaView.h */,
+				8A1B880F2085C56C00FD41B1 /* HFPanoramaView.m */,
 				8A25D4901FA1D51E0083A77D /* Main.storyboard */,
 				8A25D4931FA1D51E0083A77D /* Assets.xcassets */,
 				8A25D4951FA1D51E0083A77D /* LaunchScreen.storyboard */,
@@ -143,8 +153,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A25D48F1FA1D51E0083A77D /* ViewController.m in Sources */,
+				8A1B88132085C5BD00FD41B1 /* HFPanoramaDemoViewController.m in Sources */,
 				8A25D49A1FA1D51E0083A77D /* main.m in Sources */,
 				8A25D48C1FA1D51E0083A77D /* AppDelegate.m in Sources */,
+				8A1B88102085C56C00FD41B1 /* HFPanoramaView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
