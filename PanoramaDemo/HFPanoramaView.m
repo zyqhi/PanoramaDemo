@@ -154,9 +154,23 @@
     SCNNode *node = [SCNNode nodeWithGeometry:cube];
     
     // 限制该node一直朝向相机，如果不设置的话，会导致box变形
-    SCNLookAtConstraint *constraint = [SCNLookAtConstraint lookAtConstraintWithTarget:_cameraNode];
-    constraint.gimbalLockEnabled = YES;
-    node.constraints = @[constraint];
+//    SCNLookAtConstraint *constraint = [SCNLookAtConstraint lookAtConstraintWithTarget:_cameraNode];
+//    constraint.gimbalLockEnabled = YES;
+//    node.constraints = @[constraint];
+    
+    CABasicAnimation *animScale = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+    animScale.toValue = @(4);
+    
+    CABasicAnimation *animOpa = [CABasicAnimation animationWithKeyPath:@"opacity"];
+    animOpa.toValue = @(0);
+    
+    CAAnimationGroup *group = [CAAnimationGroup animation];
+    group.animations = @[animScale, animOpa];
+    group.repeatCount = HUGE_VALF;
+    group.duration = 1.0f;
+    group.removedOnCompletion = NO;
+
+    [node addAnimation:group forKey:@"scaleAnimation"];
     
     return node;
 }
