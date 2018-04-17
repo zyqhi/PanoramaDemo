@@ -93,6 +93,9 @@
 - (void)addGestures {
     UIPanGestureRecognizer *panGR = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
     [_sceneView addGestureRecognizer:panGR];
+    
+    UIPinchGestureRecognizer *pinchGR = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
+    [_sceneView addGestureRecognizer:pinchGR];
 }
 
 #pragma mark - Gesture handlers
@@ -113,6 +116,19 @@
         // eulerAngles 是啥?
         _cameraNode.eulerAngles = newOrientation;
         _prevLocation = location;
+    }
+}
+
+- (void)handlePinch:(UIPinchGestureRecognizer *)gr {
+    if (gr.state == UIGestureRecognizerStateBegan) {
+        _initialScale = gr.scale;
+    } else if (gr.state == UIGestureRecognizerStateChanged) {
+        if (gr.scale < _initialScale) {
+            // 思考：fieldOfView的物理意义
+            _cameraNode.camera.fieldOfView += 1;
+        } else {
+            _cameraNode.camera.fieldOfView -= 1;
+        }
     }
 }
 
