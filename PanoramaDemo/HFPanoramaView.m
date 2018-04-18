@@ -143,34 +143,45 @@
         return;
     }
     
-    SCNNode *boxNode = [self createBoxNode];
+    SCNNode *boxNode = [self createBoxNodeWithDimension:1.0 animated:YES];
     boxNode.position = hitTestResults.firstObject.localCoordinates;
     [_geometryNode addChildNode:boxNode];
+    
+    SCNNode *innerNode = [self createBoxNodeWithDimension:0.5 animated:NO];
+    innerNode.position = hitTestResults.firstObject.localCoordinates;
+    [_geometryNode addChildNode:innerNode];
 }
 
-- (SCNNode *)createBoxNode {
-    float dimension = 0.5;
-    SCNBox *cube = [SCNBox boxWithWidth:dimension height:dimension length:dimension chamferRadius:dimension/2];
-    SCNNode *node = [SCNNode nodeWithGeometry:cube];
+- (SCNNode *)createBoxNodeWithDimension:(CGFloat)dimension animated:(BOOL)animated {
+    SCNMaterial *material = [SCNMaterial new];
+    material.diffuse.contents = [UIColor redColor];
+    
+    SCNSphere *sphere = [SCNSphere new];
+    sphere.radius = dimension / 2;
+    sphere.segmentCount = 300;
+    sphere.firstMaterial = material;
+
+    SCNNode *node = [SCNNode nodeWithGeometry:sphere];
     
     // 限制该node一直朝向相机，如果不设置的话，会导致box变形
 //    SCNLookAtConstraint *constraint = [SCNLookAtConstraint lookAtConstraintWithTarget:_cameraNode];
 //    constraint.gimbalLockEnabled = YES;
 //    node.constraints = @[constraint];
-    
-    CABasicAnimation *animScale = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
-    animScale.toValue = @(4);
-    
-    CABasicAnimation *animOpa = [CABasicAnimation animationWithKeyPath:@"opacity"];
-    animOpa.toValue = @(0);
-    
-    CAAnimationGroup *group = [CAAnimationGroup animation];
-    group.animations = @[animScale, animOpa];
-    group.repeatCount = HUGE_VALF;
-    group.duration = 1.0f;
-    group.removedOnCompletion = NO;
-
-    [node addAnimation:group forKey:@"scaleAnimation"];
+    if (animated) {
+        CABasicAnimation *animScale = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+        animScale.toValue = @(4);
+        
+        CABasicAnimation *animOpa = [CABasicAnimation animationWithKeyPath:@"opacity"];
+        animOpa.toValue = @(0);
+        
+        CAAnimationGroup *group = [CAAnimationGroup animation];
+        group.animations = @[animScale, animOpa];
+        group.repeatCount = HUGE_VALF;
+        group.duration = 1.0f;
+        group.removedOnCompletion = NO;
+        
+        [node addAnimation:group forKey:@"scaleAnimation"];
+    }
     
     return node;
 }
