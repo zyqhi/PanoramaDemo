@@ -10,8 +10,10 @@
 @import SpriteKit;
 @import ImageIO;
 @import Metal;
+@import CoreMotion;
 
 #import "HFPanoramaView.h"
+#import "CMDeviceMotion+HF.h"
 
 #define HF_DEFAULT_FIELD_OF_VIEW 85
 
@@ -28,6 +30,8 @@
 @property (nonatomic, assign) CGPoint panSpeed;
 @property (nonatomic, assign) CGFloat initialScale;
 
+@property (nonatomic, strong) CMMotionManager *motionManager;
+
 @end
 
 @implementation HFPanoramaView
@@ -40,9 +44,34 @@
         [self addGestures];
         
         _panSpeed = CGPointMake(0.005, 0.005);
+        _motionManager = [CMMotionManager new];
+        if (_motionManager.isDeviceMotionAvailable) {
+            _motionManager.deviceMotionUpdateInterval = 1/60.0;
+            [_motionManager startDeviceMotionUpdatesToQueue:NSOperationQueue.mainQueue withHandler:^(CMDeviceMotion * _Nullable motion, NSError * _Nullable error) {
+                NSLog(@"motion is: %@", motion);
+                
+                SCNVector4 or = motion.hf_orientation;
+                // 对位置参数进行滤波，防止过于精确导致场景抖动
+                CGFloat base = 1000.0f;
+                or.x = ((int)(or.x * base)) / base;
+                or.y = ((int)(or.y * base)) / base;
+                or.z = ((int)(or.z * base)) / base;
+                or.w = ((int)(or.w * base)) / base;
+                
+                _cameraNode.orientation = or;
+                
+                NSLog(@"or.x: %lf, or.y: %lf, or.z: %lf, or.z: %lf", or.x, or.y, or.z, or.w);
+            }];
+        }
     }
     
     return self;
+}
+
+- (void)dealloc {
+    if (_motionManager.isDeviceMotionActive) {
+        [_motionManager stopDeviceMotionUpdates];
+    }
 }
 
 - (void)loadSubviews {
